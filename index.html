@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Im Cumming - Coming Soon</title> <!-- More Descriptive Title -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Preload the font for faster loading -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header: Contains the dark/light mode toggle -->
+    <header>
+        <label class="toggle-switch">
+            <input type="checkbox" id="mode-toggle">
+            <span class="slider"></span>
+        </label>
+    </header>
+
+    <!-- Main Content: Contains the heading, tagline, and optional signup form -->
+    <main>
+        <section id="home" class="content-section">
+            <div class="container">
+                <h1>im cumming</h1>
+                <p>Something exciting is on the horizon.</p>
+                <p>Prepare for impact.</p>
+                <!-- Optional Signup Form -->
+                <form class="signup-form">
+                    <input type="email" id="email" name="email" placeholder="Get Notified (Optional)">
+                    <button type="submit">Stay Tuned</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer: Contains copyright information -->
+    <footer>
+        <p>© 2025 Imcummi.ng. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript: Handles dark/light mode and splash animation -->
+    <script>
+        const modeToggle = document.getElementById('mode-toggle');
+        const body = document.body;
+
+        // Check for saved preference in localStorage
+        const savedMode = localStorage.getItem('mode');
+        if (savedMode === 'light') {
+            body.classList.add('light-mode');
+            modeToggle.checked = true;
+        } else {
+            body.classList.add('dark-mode'); // Default to dark mode
+        }
+
+        // Toggle between light and dark modes
+        modeToggle.addEventListener('change', () => {
+            body.classList.toggle('light-mode');
+            body.classList.toggle('dark-mode');
+            // Save preference to localStorage
+            localStorage.setItem('mode', body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+
+        // --- Splash Animation Logic ---
+
+        function createSplash() {
+            const splash = document.createElement('div');
+            splash.classList.add('splash');
+
+            // Random position
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            splash.style.left = `${x}px`;
+            splash.style.top = `${y}px`;
+
+            // Add to the body
+            document.body.appendChild(splash);
+
+            // Remove the splash after the animation completes
+            splash.addEventListener('animationend', () => {
+                splash.remove();
+            });
+        }
+
+        function triggerSplash() {
+            createSplash();
+            // Random interval between 0.5 and 2 seconds
+            const interval = Math.random() * (2000 - 500) + 500;
+            setTimeout(triggerSplash, interval);
+        }
+
+        // Start the splash animation
+        triggerSplash();
+    </script>
+
+    <!-- Fallback content for users with JavaScript disabled -->
+    <noscript>
+        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #1f1829; color: #fff; display: flex; justify-content: center; align-items: center; text-align: center; z-index: 1000;">
+            <p>Please enable JavaScript to view this website.</p>
+        </div>
+    </noscript>
+</body>
+</html>
