@@ -3,101 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Im Cumming - Coming Soon</title> <!-- More Descriptive Title -->
+    <title>Im Cumming - Coming Soon</title>
+
+    <!--  *** Open Graph Meta Tags ***  -->
+    <meta property="og:title" content="Im Cumming - Coming Soon">
+    <meta property="og:description" content="Something exciting is on the horizon. Prepare for impact.">
+    <meta property="og:image" content="imcumming-embed.jpeg">
+    <meta property="og:url" content="https://imcummi.ng/">
+    <meta property="og:type" content="website">
+    <meta name="description" content="Something exciting is on the horizon.  Prepare for impact." />
+
+
     <link rel="stylesheet" href="style.css">
-    <!-- Preload the font for faster loading -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" as="style">
+    <!-- Preload and load fonts (combined for efficiency) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <!-- Header: Contains the dark/light mode toggle -->
     <header>
-        <label class="toggle-switch">
-            <input type="checkbox" id="mode-toggle">
-            <span class="slider"></span>
-        </label>
+        <nav class="container">
+            <a href="#" class="logo">ImCumming</a>
+            <div class="toggle-container">
+                <span class="toggle-label">Toggle</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="mode-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </nav>
     </header>
 
-    <!-- Main Content: Contains the heading, tagline, and optional signup form -->
     <main>
         <section id="home" class="content-section">
             <div class="container">
                 <h1>im cumming</h1>
                 <p>Something exciting is on the horizon.</p>
                 <p>Prepare for impact.</p>
-                <!-- Optional Signup Form -->
-                <form class="signup-form">
-                    <input type="email" id="email" name="email" placeholder="Get Notified (Optional)">
-                    <button type="submit">Stay Tuned</button>
-                </form>
             </div>
         </section>
     </main>
 
-    <!-- Footer: Contains copyright information -->
     <footer>
+      <div class="container">
         <p>© 2025 Imcummi.ng. All rights reserved.</p>
+        </div>
     </footer>
 
-    <!-- JavaScript: Handles dark/light mode and splash animation -->
     <script>
-        const modeToggle = document.getElementById('mode-toggle');
-        const body = document.body;
+        (function() {
+            const modeToggle = document.getElementById('mode-toggle');
+            const body = document.body;
+            const toggleLabel = document.querySelector('.toggle-label');
+            let splashTimeout;
 
-        // Check for saved preference in localStorage
-        const savedMode = localStorage.getItem('mode');
-        if (savedMode === 'light') {
-            body.classList.add('light-mode');
-            modeToggle.checked = true;
-        } else {
-            body.classList.add('dark-mode'); // Default to dark mode
-        }
+            if (!modeToggle || !body || !toggleLabel) {
+                console.error('Required DOM elements are missing.');
+                return;
+            }
 
-        // Toggle between light and dark modes
-        modeToggle.addEventListener('change', () => {
-            body.classList.toggle('light-mode');
-            body.classList.toggle('dark-mode');
-            // Save preference to localStorage
-            localStorage.setItem('mode', body.classList.contains('light-mode') ? 'light' : 'dark');
-        });
+            // Load saved mode, default to dark
+            try {
+                const savedMode = localStorage.getItem('mode');
+                const isLightMode = savedMode === 'light';
+                body.classList.add(isLightMode ? 'light-mode' : 'dark-mode');
+                modeToggle.checked = isLightMode;
+                toggleLabel.textContent = "Toggle"; // Set label after class
+            } catch (e) {
+                console.error('Error loading mode:', e);
+                body.classList.add('dark-mode'); // Fallback
+            }
 
-        // --- Splash Animation Logic ---
-
-        function createSplash() {
-            const splash = document.createElement('div');
-            splash.classList.add('splash');
-
-            // Random position
-            const x = Math.random() * window.innerWidth;
-            const y = Math.random() * window.innerHeight;
-            splash.style.left = `${x}px`;
-            splash.style.top = `${y}px`;
-
-            // Add to the body
-            document.body.appendChild(splash);
-
-            // Remove the splash after the animation completes
-            splash.addEventListener('animationend', () => {
-                splash.remove();
+            // Toggle mode
+            modeToggle.addEventListener('change', () => {
+                try {
+                    const isLightMode = modeToggle.checked;
+                    body.classList.toggle('light-mode', isLightMode);
+                    body.classList.toggle('dark-mode', !isLightMode);
+                    localStorage.setItem('mode', isLightMode ? 'light' : 'dark');
+                    toggleLabel.textContent = "Toggle"; // Update label
+                    restartSplash();
+                } catch (e) {
+                    console.error('Error saving mode:', e);
+                }
             });
-        }
 
-        function triggerSplash() {
-            createSplash();
-            // Random interval between 0.5 and 2 seconds
-            const interval = Math.random() * (2000 - 500) + 500;
-            setTimeout(triggerSplash, interval);
-        }
+            // Splash animation logic
+            function createSplash() {
+                const splash = document.createElement('div');
+                splash.classList.add('splash');
+                splash.style.position = 'fixed'; // Use fixed positioning
 
-        // Start the splash animation
-        triggerSplash();
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+
+                splash.style.left = `${x}px`;
+                splash.style.top = `${y}px`;
+                document.body.appendChild(splash);
+
+                splash.addEventListener('animationend', () => splash.remove());
+            }
+
+            function triggerSplash() {
+                createSplash();
+                const interval = 500 + Math.random() * 1500;
+                splashTimeout = setTimeout(triggerSplash, interval);
+            }
+
+            function restartSplash() {
+                clearTimeout(splashTimeout);
+                triggerSplash();
+            }
+
+            restartSplash();
+
+            window.addEventListener('beforeunload', () => clearTimeout(splashTimeout));
+        })();
     </script>
 
-    <!-- Fallback content for users with JavaScript disabled -->
     <noscript>
-        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #1f1829; color: #fff; display: flex; justify-content: center; align-items: center; text-align: center; z-index: 1000;">
+        <div class="noscript-message">
             <p>Please enable JavaScript to view this website.</p>
         </div>
     </noscript>

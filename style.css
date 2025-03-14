@@ -11,7 +11,7 @@ body {
     background-color: #1f1829;
     color: #fff;
     transition: background-color 0.3s ease, color 0.3s ease;
-    overflow: hidden; /* Prevent scrollbars caused by the animation */
+    overflow-x: hidden; /* Still important! */
 }
 
 .dark-mode {
@@ -30,22 +30,21 @@ body {
     padding: 0 2rem;
     width: 90%;
     text-align: center;
-    position: relative; /* Needed for z-index */
-    z-index: 1;      /* Ensure content is above the splash */
+    position: relative;
+    z-index: 1;
 }
 
 /* --- Header --- */
-
 header {
     padding: 1rem;
     display: flex;
-    justify-content: flex-end; /* Align toggle to the right */
+    justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    background-color: rgba(31, 24, 41, 0.8); /* Semi-transparent background */
-    backdrop-filter: blur(10px); /* Blur effect */
+    background-color: rgba(31, 24, 41, 0.8);
+    backdrop-filter: blur(10px);
 }
 
 .light-mode header {
@@ -53,14 +52,41 @@ header {
     backdrop-filter: blur(5px);
 }
 
-/* --- Toggle Switch --- */
+nav.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-label {
+    color: #ccc;
+    font-size: 0.9rem;
+    user-select: none;
+}
+
+.light-mode .toggle-label {
+    color: #333;
+}
 
 .toggle-switch {
     position: relative;
     display: inline-block;
     width: 50px;
     height: 25px;
-    margin-right: 1rem;
 }
 
 .toggle-switch input {
@@ -77,7 +103,7 @@ header {
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    transition: .4s;
+    transition: 0.4s;
     border-radius: 25px;
 }
 
@@ -89,7 +115,7 @@ header {
     left: 2px;
     bottom: 2px;
     background-color: white;
-    transition: .4s;
+    transition: 0.4s;
     border-radius: 50%;
 }
 
@@ -98,10 +124,11 @@ header {
 }
 
 input:checked + .slider {
-    background-color: #007bff; /* Blue */
+    background-color: #007bff;
 }
-.dark-mode input:checked + .slider{
-  background-color:#6ab7ff;
+
+.dark-mode input:checked + .slider {
+    background-color: #6ab7ff;
 }
 
 input:checked + .slider:before {
@@ -109,26 +136,30 @@ input:checked + .slider:before {
 }
 
 /* --- Main Content --- */
-
 main {
     flex-grow: 1;
     display: flex;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
+    flex-direction: column;
+    justify-content: center;
 }
 
-.content-section {} /* No specific styles needed */
+.content-section {
+    padding: 4rem 0;
+}
 
 h1 {
     font-size: 4rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: #fff;
+    color: inherit;
     text-transform: uppercase;
 }
 
-.light-mode h1{
-  color:#222
+h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: inherit;
 }
 
 p {
@@ -136,29 +167,23 @@ p {
     color: #ccc;
     margin-bottom: 0.5rem;
 }
+.light-mode p {
+     color: #555;
+}
 
-/* --- Splash Animation (Dynamic) --- */
-
+/* --- Splash Animation --- */
 .splash {
-    position: absolute;
-    /* top, left are set by JavaScript */
-    transform: scale(0); /* Start small */
-    width: 20px; /* Initial width */
-    height: 20px; /* Initial height */
-    border-radius: 50%; /* Circular shape */
-    background-color: #f0f0f0; /* Off-white (dark mode) */
-    animation: splash-effect 1.5s ease-out forwards; /*  forwards */
-    pointer-events: none; /*  click through */
+    position: absolute;  /*  Use absolute positioning  */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #f0f0f0;  /*  Simplified: Use CSS for base color  */
+    animation: splash-effect 1.5s ease-out forwards;
+    pointer-events: none;
 }
 
-.dark-mode .splash {
-    background-color: #f0f0f0; /* Consistent off-white in dark mode */
-}
-
-.light-mode .splash {
-    background-color: #333; /* Dark gray in light mode */
-}
-
+/*  No need for dark-mode/light-mode specific splash colors  */
+/*  The body's background color will determine the contrast  */
 
 @keyframes splash-effect {
     0% {
@@ -166,88 +191,71 @@ p {
         opacity: 1;
     }
     70% {
-        transform:  scale(50); /*  larger scale */
-
+        transform: scale(50);
     }
     100% {
-        transform: scale(60); /*  larger scale */
-        opacity: 0;
+      transform: scale(60);
+      opacity: 0;
+
     }
-}
-
-/* --- Signup Form --- */
-
-.signup-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-}
-
-.signup-form input[type="email"] {
-    padding: 0.75rem 1rem;
-    border: 2px solid #fff;
-    border-radius: 5px;
-    background-color: transparent;
-    color: #fff;
-    width: 250px;
-    font-size: 1rem;
-    font-family: inherit;
-}
-
-.signup-form input[type="email"]::placeholder {
-    color: #aaa;
-}
-
-.light-mode .signup-form input[type="email"]{
-    background-color: #f9f9f9;
-    color:#222;
-    border:2px solid #222;
-}
-.signup-form button {
-    padding: 0.75rem 1.5rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-.signup-form button:hover {
-    background-color: #0056b3;
 }
 
 /* --- Footer --- */
-
 footer {
     text-align: center;
     padding: 1rem 0;
     color: #888;
     border-top: 1px solid #333;
-    position: relative; /* Needed for z-index */
-    z-index: 1;      /* Ensure footer is above splash */
+    position: relative;
+    z-index: 1;
 }
-.light-mode footer{
-    color:#333
+
+.light-mode footer {
+    color: #333;
 }
 
 /* --- Responsive Adjustments --- */
-
 @media (max-width: 768px) {
     h1 {
         font-size: 3rem;
     }
-     .signup-form {
-      flex-direction: column;
-      width: 80%;
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    nav.container {
+        flex-direction: column;
+    }
+
+    .toggle-container {
+        margin-top: 1rem;
     }
 }
 
-@media (max-width: 480px){
-  .signup-form {
-    width:100%;
-  }
+@media (max-width: 480px) {
+    .toggle-label {
+        display: none;
+    }
+}
+
+/* --- NoScript Styles --- */
+.noscript-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1f1829;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1000;
 }
